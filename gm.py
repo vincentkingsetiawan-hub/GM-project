@@ -1,4 +1,4 @@
-# Opsi upgrade
+# Opsi upgrade primer
 roti = [
     "roti murah (0)",
     "roti sesame (50)",
@@ -10,7 +10,7 @@ daging = [
     "daging sapi (0)",
     "daging ayam (0)",
     "daging ikan (50)",
-    "katsu ayam (100)", # Koma sudah ditambahkan di sini
+    "katsu ayam (100)", 
     "sosis (150)"
 ]
 
@@ -37,10 +37,14 @@ sudah_diupgrade = [
     "daging ayam (0)", 
     "keju (0)", 
     "tomat (0)", 
-    "air es (0)"
+    "air es (0)",
+    "kayu (0)",
+    "tidak ada (0)",
+    "satu mata (0)",
+    "kantong plastik (0)"
 ]
 
-# Opsi gaya
+# Opsi upgrade sekunder
 meja = [
     "kayu (0)",
     "kayu jati (100)",
@@ -78,16 +82,52 @@ marketing = [
     "iklan medsos (1000)"
 ]
 
-# Fungsi pembantu untuk menampilkan kategori upgrade dengan rapi
+# Nilai setiap opsi
+nilai_upgrade = sudah_diupgrade.count(sudah_diupgrade)
+isi_pemasaran = []
+nilai_pemasaran = isi_pemasaran.count(isi_pemasaran)
+
+# Fungsi pemasaran
+def pemasaran(opsi_pemasaran):
+    if opsi_pemasaran not in isi_pemasaran:
+        isi_pemasaran.append(opsi_pemasaran)
+        print(f"\n--- {opsi_pemasaran} berhasil diterapkan untuk hari ini! ---")
+    else:
+        print(f"\n--- {opsi_pemasaran} sudah aktif dipakai hari ini! ---")
+
+# Fungsi pembantu untuk menampilkan kategori
 def tampilkan_kategori(nama_kategori):
     print("\n--- Daftar Item ---")
-    for item in nama_kategori:
+    for i, item in enumerate(nama_kategori, start=1):
         if item in sudah_diupgrade:
-            print(f"- {item} (Sudah dibeli)")
+            print(f"{i}. {item} (Sudah dibeli)")
         else:
-            print(f"- {item}")
-    print("\nApa yang ingin dibeli?")
+            print(f"{i}. {item}")
+    print("\n0. Kembali")
+    print("Apa yang ingin dibeli?")
 
+    sub_input_1 = input("")
+    while True:
+        if sub_input_1 == "0":
+            break
+        elif sub_input_1.isdigit():
+            pilihan_angka = int(sub_input_1)
+
+            if 1 <= pilihan_angka <= len(nama_kategori):
+                item_terpilih = nama_kategori[pilihan_angka - 1]
+
+                if item_terpilih not in sudah_diupgrade:
+                    sudah_diupgrade.append(item_terpilih)
+                    print(f"\n--- {item_terpilih} berhasil dibeli! ---")
+                else:
+                    print(f"\n--- {item_terpilih} sudah ada/pernah dibeli! ---")
+        else:
+            print("Ketik angka yang benar")
+
+
+
+
+# Fungsi untuk sub-program nomor 1
 def fungsi_1():
     while True:
         print(
@@ -100,9 +140,10 @@ def fungsi_1():
             while True:
                 print(
                     "\nOpsi in-game menu Burger Stall"
-                    "\n1. Opsi upgrade"
-                    "\n2. Opsi gaya restoran"
+                    "\n1. Opsi upgrade primer"
+                    "\n2. Opsi upgrade sekunder"
                     "\n3. Opsi pemasaran"
+                    "\n4. Memulai game"
                     "\n0. Kembali ke menu awal"
                 )
                 user_input = input("Pilihan menu: ")
@@ -110,7 +151,7 @@ def fungsi_1():
                 if user_input == "1":
                     while True:
                         print(
-                            "\n--- Menu Upgrade ---"
+                            "\n--- Menu Upgrade Primer ---"
                             "\n1. Roti"
                             "\n2. Daging"
                             "\n3. Isian"
@@ -130,16 +171,73 @@ def fungsi_1():
                         elif sub_input == "0":
                             break
                         else:
-                            print("Pilihan tidak valid, silakan coba lagi.")
+                            print("\nKetik yang benar!!!")
 
                 elif user_input == "2":
-                    print("\n[Fitur Opsi Gaya Restoran belum dibuat]")
+                    while True:
+                        print(
+                            "\n--- Menu Upgrade Sekunder ---"
+                            "\n1. Meja"
+                            "\n2. Kaca Etalase"
+                            "\n3. Kompor"
+                            "\n4. Bungkus"
+                            "\n0. Kembali"
+                        )
+                        sub_input = input("Pilihan upgrade: ")
+
+                        if sub_input == "1":
+                            tampilkan_kategori(meja)
+                        elif sub_input == "2":
+                            tampilkan_kategori(kaca_etalase)
+                        elif sub_input == "3":
+                            tampilkan_kategori(kompor)
+                        elif sub_input == "4":
+                            tampilkan_kategori(bungkus)
+                        elif sub_input == "0":
+                            break
+                        else:
+                            print("\nKetik yang benar!!!")
+
+                            sub_input = input("")
+
                 elif user_input == "3":
-                    print("\n[Fitur Opsi Pemasaran belum dibuat]")
+                    while True:
+                        print("\n--- Menu Pemasaran ---")
+                        for i, item in enumerate(marketing, start=1):
+                            if item in isi_pemasaran:
+                                print(f"{i}. {item} sudah ada untuk dipakai untuk satu hari")
+                            else:
+                                print(f"{i}. {item}")
+                        print("0. Kembali")
+                        sub_input = input("Pilihan pemasaran: ")
+
+                        if sub_input == "1":
+                            pemasaran("mulut ke mulut (0)")
+                        elif sub_input == "2":
+                            pemasaran("brosur (50)")
+                        elif sub_input == "3":
+                            pemasaran("poster (200)")
+                        elif sub_input == "4":
+                            pemasaran("papan iklan (300)")
+                        elif sub_input == "5":
+                            pemasaran("papan LED (400)")
+                        elif sub_input == "6":
+                            pemasaran("iklan TV (600)")
+                        elif sub_input == "7":
+                            pemasaran("iklan medsos (1000)")
+                        elif sub_input == "0":
+                            break
+                        else:
+                            print("\nKetik yang benar!!!")
+
+                            sub_input = input("")
+
+                elif user_input == "4":
+                    print("\nMohon maaf tapi gameya masih dalam proses pengembangan~~~")
                 elif user_input == "0":
                     break
                 else:
-                    print("Ketik yang benar interaksinya!")
+                    print("Ketik yang benar!")
         else:
             break
 
